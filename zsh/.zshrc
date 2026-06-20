@@ -12,6 +12,12 @@ zstyle :compinstall filename '$HOME/.zshrc'
 
 autoload -Uz compinit
 compinit
+
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
+bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
 # End of lines added by compinstall
 #
 alias gp='git push'
@@ -24,12 +30,11 @@ esac
 
 [ -f ~/.zsh_secrets ] && source ~/.zsh_secrets
 
-export PATH="$HOME/.local/bin:$PATH"
-
 export GOPATH="$HOME/go"
 export GOBIN="$GOPATH/bin"
-export PATH="$GOBIN:$PATH"
+PATH="$HOME/.local/bin:$GOBIN:$PATH"
 
+unfunction zle-keymap-select 2>/dev/null
 eval "$(starship init zsh)"
 
 export EDITOR=nvim
