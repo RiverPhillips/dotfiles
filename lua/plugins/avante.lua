@@ -8,15 +8,17 @@ return {
 	"yetone/avante.nvim",
 	event = "VeryLazy",
 	build = "make", -- This is Optional, only if you want to use tiktoken_core to calculate tokens count
+	enabled = false,
 	opts = {
 		-- add any opts here
-		provider = "copilot",
-		auto_suggestions_provider = "copilot",
+		provider = "claude",
+		auto_suggestions_provider = "claude",
 		highlights = {
 			diff = {
 				current = "SolarizedLightCurrentGroup",
 			}
 		},
+		mode = "legacy",
 
 	},
 	dependencies = {
@@ -25,7 +27,6 @@ return {
 		"nvim-telescope/telescope.nvim",
 		"nvim-lua/plenary.nvim",
 		"MunifTanjim/nui.nvim",
-		"zbirenbaum/copilot.lua",
 		--- The below is optional, make sure to setup it properly if you have lazy=true
 		{
 			'MeanderingProgrammer/render-markdown.nvim',
@@ -50,5 +51,4 @@ return {
 			},
 		},
 	},
-	enabled = true
 }

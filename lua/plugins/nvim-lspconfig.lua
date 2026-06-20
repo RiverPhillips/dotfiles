@@ -20,14 +20,6 @@ return {
 				"bashls",
 				"terraformls"
 			},
-			handlers = { rust_analyzer = function() end }
 		})
-
-		masonlsp.setup_handlers {
-			function(server_name) -- default handler (optional)
-				local capabilities = require('blink.cmp').get_lsp_capabilities()
-				require("lspconfig")[server_name].setup({ capabilities = capabilities })
-			end,
-		}
 	end
 }
