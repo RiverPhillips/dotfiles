@@ -1,8 +1,9 @@
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=10000
+SAVEHIST=100000
 setopt extendedglob
+setopt HIST_IGNORE_DUPS HIST_IGNORE_SPACE SHARE_HISTORY INC_APPEND_HISTORY
 unsetopt autocd beep
 bindkey -v
 # End of lines configured by zsh-newuser-install
@@ -13,11 +14,27 @@ autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 #
-alias pbcopy='xsel --clipboard --input'
-alias pbpaste='xsel --clipboard --output'
+alias gp='git push'
+
+# OS-specific settings
+case "$OSTYPE" in
+  darwin*) [ -f ~/.config/zsh/os/darwin.zsh ] && source ~/.config/zsh/os/darwin.zsh ;;
+  linux*)  [ -f ~/.config/zsh/os/linux.zsh ]  && source ~/.config/zsh/os/linux.zsh ;;
+esac
 
 [ -f ~/.zsh_secrets ] && source ~/.zsh_secrets
 
 export PATH="$HOME/.local/bin:$PATH"
 
+export GOPATH="$HOME/go"
+export GOBIN="$GOPATH/bin"
+export PATH="$GOBIN:$PATH"
+
 eval "$(starship init zsh)"
+
+export EDITOR=nvim
+export VISUAL=nvim
+
+source <(fzf --zsh)
+
+export GPG_TTY=$TTY

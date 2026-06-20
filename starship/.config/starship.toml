@@ -1,4 +1,23 @@
 # Get editor completions based on the config schema
 "$schema" = 'https://starship.rs/config-schema.json'
 
+add_newline = false
+command_timeout = 1000
+
+[cmd_duration]
+min_time = 2000
+
 [git_branch]
+only_attached = true
+
+[git_commit]
+commit_hash_length = 6
+
+[line_break]
+disabled = true
+
+[memory_usage]
+disabled = false
+
+[os]
+disabled = false
