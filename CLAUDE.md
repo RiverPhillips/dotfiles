@@ -12,6 +12,9 @@ Packages:
 - `nvim/` — Neovim config (lazy.nvim-based, plugin specs consolidated in `.config/nvim/lua/plugins.lua`)
 - `starship/` — `.config/starship.toml` prompt config
 - `ghostty/` — `.config/ghostty/config` terminal config
+- `claude/` — Claude Code global config: `dot-claude/CLAUDE.md`, `dot-claude/settings.json`, plus empty `commands/`, `agents/`, `skills/` dirs for future use.
+
+MCP servers are declared in the tracked `.mcp.json` at the repo root (Claude Code's project-scoped, committable MCP config) — edit it as text, pin versions in the args, commit. Do *not* configure them via `claude mcp add -s user`: that writes into `~/.claude.json`, an untracked live state blob (account identity, machine IDs, project paths, caches) that must never be committed, especially to this public repo.
 
 ## Commands
 
@@ -33,3 +36,4 @@ There is no build, lint, or test suite — this repo is config files. Always run
   - `~/.gitconfig.local` (untracked) is included from `git/.gitconfig` for machine-specific overrides like `gpg.ssh.program`.
   - `~/.zsh_secrets` (untracked) is sourced from `zsh/.zshrc` if present.
 - OS-specific zsh behavior is split into `zsh/.config/zsh/os/darwin.zsh` and `linux.zsh`, sourced conditionally from `.zshrc` based on `$OSTYPE`.
+- Prefer editing the tracked config files directly (text edits) over running commands that mutate config in place (e.g. CLI subcommands that rewrite a JSON/TOML file). This repo's value is in having the actual desired config readable and diffable in-tree; a command that reaches out and edits state elsewhere bypasses that. Only fall back to a command when there's no config-file equivalent (e.g. `claude mcp add -s user`, which necessarily writes into the untracked `~/.claude.json`).
