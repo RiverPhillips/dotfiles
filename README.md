@@ -8,7 +8,7 @@ Personal dotfiles, managed with [GNU Stow](https://www.gnu.org/software/stow/) a
 |------------|--------------------------------------------------------|
 | `git/`     | `~/.gitconfig`, `~/.gitignore`                          |
 | `zsh/`     | `~/.zshrc` and OS-specific fragments (macOS/Linux)       |
-| `nvim/`    | Neovim config (lazy.nvim), synced via `git subtree` from a separate neovim-config repo |
+| `nvim/`    | Neovim config (lazy.nvim)                             |
 | `starship` | `~/.config/starship.toml` prompt config                 |
 | `ghostty`  | `~/.config/ghostty/config` terminal config               |
 

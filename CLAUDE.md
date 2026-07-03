@@ -9,7 +9,7 @@ A personal dotfiles repository managed with [GNU Stow](https://www.gnu.org/softw
 Packages:
 - `git/` — `.gitconfig` and `dot-gitignore` (→ `~/.gitignore`)
 - `zsh/` — `.zshrc` plus OS-specific fragments in `.config/zsh/os/{darwin,linux}.zsh`
-- `nvim/` — Neovim config, pulled in via `git subtree` from a separate `neovim-config` repo (lazy.nvim-based, plugin specs under `.config/nvim/lua/plugins/`)
+- `nvim/` — Neovim config (lazy.nvim-based, plugin specs consolidated in `.config/nvim/lua/plugins.lua`)
 - `starship/` — `.config/starship.toml` prompt config
 - `ghostty/` — `.config/ghostty/config` terminal config
 
@@ -33,4 +33,3 @@ There is no build, lint, or test suite — this repo is config files. Always run
   - `~/.gitconfig.local` (untracked) is included from `git/.gitconfig` for machine-specific overrides like `gpg.ssh.program`.
   - `~/.zsh_secrets` (untracked) is sourced from `zsh/.zshrc` if present.
 - OS-specific zsh behavior is split into `zsh/.config/zsh/os/darwin.zsh` and `linux.zsh`, sourced conditionally from `.zshrc` based on `$OSTYPE`.
-- The `nvim/` package is synced from a separate neovim-config repo via `git subtree` — see the "Subtree-merge neovim-config" commit. Prefer making substantive Neovim config changes upstream in that repo when practical, since this directory is periodically re-synced from it.
