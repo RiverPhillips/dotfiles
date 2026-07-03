@@ -15,11 +15,6 @@
   "model": "opus",
   "permissions": {
     "allow": [
-      "Bash(git status:*)",
-      "Bash(git diff:*)",
-      "Bash(git log:*)",
-      "Bash(git show:*)",
-      "Bash(git branch:*)",
       "Bash(git tag:*)",
       "Bash(git remote:*)",
       "Bash(git blame:*)",
@@ -30,12 +25,22 @@
       "Bash(git ls-files:*)",
       "Bash(git ls-remote:*)",
       "Bash(git show-ref:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
       "Bash(git fetch:*)",
       "Bash(git stash push:*)",
       "Bash(git stash list:*)",
-      "Bash(git stash show:*)"
+      "Bash(git stash show:*)",
+      "mcp__git__git_status",
+      "mcp__git__git_diff",
+      "mcp__git__git_diff_unstaged",
+      "mcp__git__git_diff_staged",
+      "mcp__git__git_log",
+      "mcp__git__git_show",
+      "mcp__git__git_branch",
+      "mcp__git__git_add",
+      "mcp__git__git_commit",
+      "mcp__git__git_reset",
+      "mcp__git__git_checkout",
+      "mcp__git__git_create_branch"
     ]
   }
 }
