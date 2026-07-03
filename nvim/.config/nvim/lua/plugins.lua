@@ -4,56 +4,6 @@ return {
 		event = "InsertEnter",
 		config = true,
 	},
-
-	{
-		"yetone/avante.nvim",
-		event = "VeryLazy",
-		build = "make", -- This is Optional, only if you want to use tiktoken_core to calculate tokens count
-		enabled = false,
-		opts = {
-			-- add any opts here
-			provider = "claude",
-			auto_suggestions_provider = "claude",
-			highlights = {
-				diff = {
-					current = "SolarizedLightCurrentGroup",
-				}
-			},
-			mode = "legacy",
-
-		},
-		dependencies = {
-			"nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-			"stevearc/dressing.nvim",
-			"nvim-telescope/telescope.nvim",
-			"nvim-lua/plenary.nvim",
-			"MunifTanjim/nui.nvim",
-			--- The below is optional, make sure to setup it properly if you have lazy=true
-			{
-				'MeanderingProgrammer/render-markdown.nvim',
-				opts = {
-					file_types = { "markdown", "Avante" },
-				},
-				ft = { "markdown", "Avante" },
-			},
-			{
-				-- support for image pasting
-				"HakonHarnes/img-clip.nvim",
-				event = "VeryLazy",
-				opts = {
-					-- recommended settings
-					default = {
-						embed_image_as_base64 = false,
-						prompt_for_file_name = false,
-						drag_and_drop = {
-							insert_mode = true,
-						},
-					},
-				},
-			},
-		},
-	},
-
 	{
 		"stevearc/conform.nvim",
 		event = { "BufWritePre" },
@@ -94,10 +44,10 @@ return {
 
 	{
 		"mfussenegger/nvim-lint",
-		config = function ()
+		config = function()
 			local lint = require("lint")
 
-			vim.api.nvim_create_autocmd({"BufWritePost", "BufReadPost", "InsertLeave" }, {
+			vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
 				callback = function()
 					lint.try_lint()
 				end,
@@ -184,157 +134,10 @@ return {
 				-- Load luvit types when the `vim.uv` word is found
 				{ path = "luvit-meta/library", words = { "vim%.uv" } },
 				"nvim-dap-ui",
-				"neotest",
 			},
 		},
 	},
 	{ "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
-
-	{
-		"rcarriga/nvim-dap-ui",
-		dependencies = {
-			"mfussenegger/nvim-dap",
-			"nvim-neotest/nvim-nio",
-		},
-		config = function()
-			local dap, dapui = require('dap'), require('dapui')
-			dapui.setup()
-			dap.adapters.delve = {
-				type = 'server',
-				port = '${port}',
-				executable = {
-					command = 'dlv',
-					args = { 'dap', '-l', '127.0.0.1:${port}' },
-				}
-			}
-
-			dap.configurations.rust = {
-				name = 'Launch',
-				type = 'lldb',
-				request = 'launch',
-				program = function()
-					return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-				end,
-				cwd = '${workspaceFolder}',
-				stopOnEntry = false,
-				args = {},
-				-- ... the previous config goes here ...,
-				initCommands = function()
-					-- Find out where to look for the pretty printer Python module
-					local rustc_sysroot = vim.fn.trim(vim.fn.system('rustc --print sysroot'))
-
-					local script_import = 'command script import "' ..
-					    rustc_sysroot .. '/lib/rustlib/etc/lldb_lookup.py"'
-					local commands_file = rustc_sysroot .. '/lib/rustlib/etc/lldb_commands'
-
-					local commands = {}
-					local file = io.open(commands_file, 'r')
-					if file then
-						for line in file:lines() do
-							table.insert(commands, line)
-						end
-						file:close()
-					end
-					table.insert(commands, 1, script_import)
-
-					return commands
-				end,
-				-- ...,
-			}
-
-			dap.listeners.before.attach.dapui_config = function()
-				dapui.open()
-			end
-			dap.listeners.before.launch.dapui_config = function()
-				dapui.open()
-			end
-			dap.listeners.before.event_terminated.dapui_config = function()
-				dapui.close()
-			end
-			dap.listeners.before.event_exited.dapui_config = function()
-				dapui.close()
-			end
-
-			vim.keymap.set("x", "<leader>db", ":lua require('dap').toggle_breakpoint()<CR>")
-			vim.keymap.set("n", "<leader>db", ":lua require('dap').toggle_breakpoint()<CR>")
-
-			vim.keymap.set("n", "<leader>dc", ":lua require('dap').continue()<CR>")
-			vim.keymap.set("n", "<leader>do", ":lua require('dap').step_over()<CR>")
-			vim.keymap.set("n", "<leader>di", ":lua require('dap').step_into()<CR>")
-		end
-	},
-
-	{
-		"nvim-neotest/neotest",
-		dependencies = {
-			"nvim-neotest/nvim-nio",
-			"nvim-lua/plenary.nvim",
-			"antoinemadec/FixCursorHold.nvim",
-			"nvim-treesitter/nvim-treesitter",
-			{
-				"fredrikaverpil/neotest-golang",
-				version = "*",
-				dependencies = {
-					"leoluz/nvim-dap-go",
-					"andythigpen/nvim-coverage",
-				}
-			},
-			"mrcjkb/rustaceanvim"
-		},
-		config = function()
-			local neotest = require("neotest")
-
-			local neotest_golang_opts = {
-				runner = "go",
-				go_test_args = {
-					"-v",
-					"-race",
-					"-count=1",
-					"-coverprofile=" .. vim.fn.getcwd() .. "/coverage.out",
-				},
-			}
-
-			neotest.setup({
-				adapters = {
-					require("neotest-golang")(neotest_golang_opts),
-					require('rustaceanvim.neotest'),
-				},
-			})
-		end,
-		keys = {
-			{
-				"<leader>td",
-				function()
-					require("neotest").run.run({ strategy = "dap", suite = false })
-				end,
-				desc = "Debug nearest test"
-			},
-			{
-				"<leader>tr",
-				function()
-					local neotest = require("neotest")
-					neotest.run.run(vim.fn.expand("%"))
-					neotest.summary.open()
-				end,
-				desc = "Run all tests"
-			},
-			{
-				"<leader>ts",
-				function()
-					require("neotest").summary.toggle()
-				end,
-				desc = "Show test summary"
-
-			},
-			{
-				"<leader>tst",
-				function()
-					require("neotest").run.stop()
-				end,
-				desc = "Stop test run"
-			},
-		}
-	},
 
 	{
 		'mrcjkb/rustaceanvim',
@@ -410,7 +213,17 @@ return {
 		},
 		config = function()
 			local builtin = require('telescope.builtin')
-			vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
+			-- Show dotfiles but exclude .git. fd and rg spell this differently.
+			local function find_command()
+				if vim.fn.executable('fd') == 1 then
+					return { 'fd', '--type', 'f', '--hidden', '--exclude', '.git' }
+				else
+					return { 'rg', '--files', '--hidden', '--glob', '!.git' }
+				end
+			end
+			vim.keymap.set('n', '<leader>ff', function()
+				builtin.find_files({ find_command = find_command() })
+			end, { desc = 'Telescope find files' })
 			vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
 			vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
 			vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
@@ -443,7 +256,7 @@ return {
 			"MunifTanjim/nui.nvim",
 			"nvim-tree/nvim-web-devicons", -- optional, but recommended
 		},
-		lazy = false,            -- neo-tree will lazily load itself
+		lazy = false,     -- neo-tree will lazily load itself
 		opts = {
 			filesystem = {
 				filtered_items = {
@@ -495,13 +308,13 @@ return {
 			"GBrowse",
 		},
 		keys = {
-			{ "<leader>gs", "<cmd>Git<cr>", desc = "Git status" },
-			{ "<leader>gb", "<cmd>Git blame<cr>", desc = "Git blame" },
+			{ "<leader>gs", "<cmd>Git<cr>",        desc = "Git status" },
+			{ "<leader>gb", "<cmd>Git blame<cr>",  desc = "Git blame" },
 			{ "<leader>gc", "<cmd>Git commit<cr>", desc = "Git commit" },
 			{ "<leader>gd", "<cmd>Gdiffsplit<cr>", desc = "Git diff" },
-			{ "<leader>gl", "<cmd>Git log<cr>", desc = "Git log" },
-			{ "<leader>gp", "<cmd>Git push<cr>", desc = "Git push" },
-			{ "<leader>gP", "<cmd>Git pull<cr>", desc = "Git pull" },
+			{ "<leader>gl", "<cmd>Git log<cr>",    desc = "Git log" },
+			{ "<leader>gp", "<cmd>Git push<cr>",   desc = "Git push" },
+			{ "<leader>gP", "<cmd>Git pull<cr>",   desc = "Git pull" },
 		},
 		dependencies = {
 			"tpope/vim-rhubarb", -- GitHub integration
