@@ -1,0 +1,25 @@
+[user]
+	name = River Phillips
+	email = riverphillips1@gmail.com
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICeVFwTRobkQDsemYeb1ioFIaCVJUDim8mk4Kwpp0FXN
+[commit]
+	gpgsign = true
+[gpg]
+	program = gpg
+	format = ssh
+[format]
+	signoff = true
+[push]
+	autoSetupRemote = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+# Machine-specific overrides (gpg.ssh.program, etc.) live in ~/.gitconfig.local,
+# which is untracked and not part of this repo.
+[include]
+	path = ~/.gitconfig.local
+[merge]
+	conflictstyle = zdiff3
