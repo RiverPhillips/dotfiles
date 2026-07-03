@@ -7,16 +7,16 @@ default:
 
 # Preview what stow would link, without making changes
 dry-run:
-    stow -nv -t {{target}} */
+    stow -nv --dotfiles -t {{target}} */
 
 # Create the symlinks
 install:
-    stow -v -t {{target}} */
+    stow -v --dotfiles -t {{target}} */
 
 # Remove the symlinks stow created
 uninstall:
-    stow -Dv -t {{target}} */
+    stow -Dv --dotfiles -t {{target}} */
 
 # Re-link everything (useful after adding or moving files)
 restow:
-    stow -Rv -t {{target}} */
+    stow -Rv --dotfiles -t {{target}} */

@@ -4,6 +4,7 @@
 	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICeVFwTRobkQDsemYeb1ioFIaCVJUDim8mk4Kwpp0FXN
 [commit]
 	gpgsign = true
+	verbose = true
 [gpg]
 	program = gpg
 	format = ssh
@@ -11,6 +12,7 @@
 	signoff = true
 [push]
 	autoSetupRemote = true
+	followTags = true
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
@@ -23,3 +25,35 @@
 	path = ~/.gitconfig.local
 [merge]
 	conflictstyle = zdiff3
+[column]
+	ui = auto
+[branch]
+	sort = -committerdate
+[tag]
+	sort = version:refname
+[init]
+	defaultBranch = main
+[diff]
+	algorithm = histogram
+	colorMoved = plain
+	mnemonicPrefix = true
+	renames = true
+[fetch]
+	prune = true
+	pruneTags = true
+	all = true
+[help]
+	autocorrect = prompt
+[rerere]
+	enabled = true
+	autoupdate = true
+[core]
+	excludesfile = /Users/river/.gitignore
+	fsmonitor = true
+	untrackedCache = true
+[rebase]
+	autoSquash = true
+	autoStash = true
+	updateRefs = true
+[pull]
+	rebase = true
