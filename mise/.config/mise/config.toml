@@ -1,4 +1,5 @@
 [tools]
+ast-grep = "latest"
 node = 'lts'
 
 [settings]
