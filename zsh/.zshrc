@@ -43,3 +43,5 @@ export VISUAL=nvim
 source <(fzf --zsh)
 
 export GPG_TTY=$TTY
+
+eval "$(mise activate zsh)"

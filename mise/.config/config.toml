@@ -1,0 +1,12 @@
+[tools]
+node = 'lts'
+
+[settings]
+idiomatic_version_file_enable_tools = ['node']
+
+env_file = '.env'
+
+
+[settings.status]
+show_env = false
+show_tools = false
