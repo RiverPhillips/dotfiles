@@ -1,5 +1,10 @@
 [tools]
+acli = "latest"
 ast-grep = "latest"
+aws-cli = { version = "latest", symlink_bins = "true" }
+bat = "latest"
+bazelisk = "latest"
+difftastic = "latest"
 node = 'lts'
 
 [settings]

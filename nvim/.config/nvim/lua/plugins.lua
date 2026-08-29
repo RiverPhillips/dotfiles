@@ -78,6 +78,15 @@ return {
 					"terraformls"
 				},
 			})
+
+			vim.lsp.config('ast_grep', {
+				-- these are the default options, you only need to specify
+				-- options you'd like to change from the default
+				cmd = { 'ast-grep', 'lsp' },
+				filetypes = { "c", "cpp", "rust", "go", "java", "python", "javascript", "typescript", "html", "css", "kotlin", "dart", "lua" },
+				root_dir = require('lspconfig.util').root_pattern('sgconfig.yaml', 'sgconfig.yml')
+			})
+			vim.lsp.enable('ast_grep')
 		end
 	},
 
@@ -144,28 +153,6 @@ return {
 		version = '^5', -- Recommended
 		lazy = false, -- This plugin is already lazy
 	},
-
-	{
-		"ThePrimeagen/refactoring.nvim",
-		dependencies = {
-			"lewis6991/async.nvim",
-		},
-		config = function()
-			require("refactoring").setup({})
-
-			vim.keymap.set("x", "<leader>re", ":Refactor extract")
-			vim.keymap.set("x", "<leader>rf", ":Refactor extract_to_file")
-
-			vim.keymap.set("x", "<leader>rv", ":Refactor, extract_var")
-			vim.keymap.set({ "n", "x" }, "<leader>ri", ":Refactor inline_var")
-
-			vim.keymap.set("n", "<leader>rI", ":Refactor inline_func")
-
-			vim.keymap.set("n", "<leader>rb", ":Refactor extract_block")
-			vim.keymap.set("n", "<leader>rbf", ":Refactor extract_block_to_file")
-		end,
-	},
-
 	{
 		"folke/trouble.nvim",
 		opts = {}, -- for default options, refer to the configuration section for custom setup.
@@ -249,6 +236,24 @@ return {
 	},
 
 	{
+		"Marskey/telescope-sg",
+		dependencies = { "nvim-telescope/telescope.nvim" },
+		config = function()
+			require('telescope').setup {
+				extensions = {
+					ast_grep = {
+						command = {
+							"sg", -- For Linux, use `ast-grep` instead of `sg`
+							"--json=stream",
+						}, -- must have --json=stream
+						grep_open_files = false, -- search in opened files
+						lang = nil, -- string value, specify language for ast-grep `nil` for default
+					}
+				}
+			}
+		end
+	},
+	{
 		"nvim-neo-tree/neo-tree.nvim",
 		branch = "v3.x",
 		dependencies = {
@@ -328,47 +333,6 @@ return {
 		opts = {},
 	},
 
-	{
-		"ThePrimeagen/harpoon",
-		branch = "harpoon2",
-		dependencies = { "nvim-lua/plenary.nvim" },
-		config = function()
-			local harpoon = require('harpoon')
-			harpoon:setup({})
-
-
-			vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
-
-			vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
-			vim.keymap.set("n", "<C-t>", function() harpoon:list():select(2) end)
-			vim.keymap.set("n", "<C-n>", function() harpoon:list():select(3) end)
-			vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end)
-
-			-- Toggle previous & next buffers stored within Harpoon list
-			vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)
-			vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
-
-			-- basic telescope configuration
-			local conf = require("telescope.config").values
-			local function toggle_telescope(harpoon_files)
-				local file_paths = {}
-				for _, item in ipairs(harpoon_files.items) do
-					table.insert(file_paths, item.value)
-				end
-
-				require("telescope.pickers").new({}, {
-					prompt_title = "Harpoon",
-					finder = require("telescope.finders").new_table({
-						results = file_paths,
-					}),
-					previewer = conf.file_previewer({}),
-					sorter = conf.generic_sorter({}),
-				}):find()
-			end
-			vim.keymap.set("n", "<C-e>", function() toggle_telescope(harpoon:list()) end,
-				{ desc = "Open harpoon window" })
-		end
-	},
 
 	{
 		"romus204/tree-sitter-manager.nvim",
