@@ -10,7 +10,7 @@ dry-run:
     stow -nv --dotfiles -t {{target}} */
 
 # Create the symlinks
-install:
+install: submodules
     stow -v --dotfiles -t {{target}} */
 
 # Remove the symlinks stow created
@@ -18,5 +18,9 @@ uninstall:
     stow -Dv --dotfiles -t {{target}} */
 
 # Re-link everything (useful after adding or moving files)
-restow:
+restow: submodules
     stow -Rv --dotfiles -t {{target}} */
+
+# Fetch/update git submodules (e.g. tpm)
+submodules:
+    git submodule update --init --recursive
