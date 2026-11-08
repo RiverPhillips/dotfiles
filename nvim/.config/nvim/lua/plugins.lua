@@ -357,4 +357,13 @@ return {
 			require("telescope").load_extension("yaml_schema")
 		end,
 	},
+	{
+		'nvim-treesitter/nvim-treesitter-context',
+		dependencies = {},
+		config = function()
+			require('treesitter-context').setup({
+				enable = true
+			})
+		end
+	}
 }
