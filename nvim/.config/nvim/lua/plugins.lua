@@ -327,18 +327,12 @@ return {
 	},
 
 	{
-		"m4xshen/hardtime.nvim",
-		lazy = false,
-		dependencies = { "MunifTanjim/nui.nvim" },
-		opts = {},
-	},
-
-
-	{
 		"romus204/tree-sitter-manager.nvim",
 		dependencies = {}, -- tree-sitter CLI must be installed system-wide
 		config = function()
-			require("tree-sitter-manager").setup()
+			require("tree-sitter-manager").setup({
+				ensure_installed = { "go", "gomod", "lua" }, -- go parser is required by nvim-dap-go
+			})
 		end,
 	},
 
@@ -364,6 +358,56 @@ return {
 			require('treesitter-context').setup({
 				enable = true
 			})
+		end
+	},
+	{
+		"rcarriga/nvim-dap-ui",
+		dependencies = {
+			"mfussenegger/nvim-dap",
+			"nvim-neotest/nvim-nio",
+			"leoluz/nvim-dap-go"
+		},
+		config = function()
+			require('dap-go').setup()
+
+			local dap, dapui = require("dap"), require("dapui")
+			dapui.setup()
+
+			-- Arrow keys step in the direction you're moving through code (per nvim-dap README).
+			-- Only active while a debug session is running.
+			local step_keys = {
+				{ '<Down>',  dap.step_over,     'DAP: step over' },
+				{ '<Right>', dap.step_into,     'DAP: step into' },
+				{ '<Left>',  dap.step_out,      'DAP: step out' },
+				{ '<Up>',    dap.restart_frame, 'DAP: restart frame' },
+			}
+			local function set_step_keys()
+				for _, k in ipairs(step_keys) do
+					vim.keymap.set('n', k[1], k[2], { desc = k[3] })
+				end
+			end
+			local function clear_step_keys()
+				for _, k in ipairs(step_keys) do
+					pcall(vim.keymap.del, 'n', k[1])
+				end
+			end
+
+			dap.listeners.before.attach.dapui_config = function()
+				dapui.open()
+				set_step_keys()
+			end
+			dap.listeners.before.launch.dapui_config = function()
+				dapui.open()
+				set_step_keys()
+			end
+			dap.listeners.before.event_terminated.dapui_config = function()
+				dapui.close()
+				clear_step_keys()
+			end
+			dap.listeners.before.event_exited.dapui_config = function()
+				dapui.close()
+				clear_step_keys()
+			end
 		end
 	}
 }
