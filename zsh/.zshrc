@@ -22,6 +22,15 @@ bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
 #
 alias gp='git push'
 
+if command -v tmux >/dev/null 2>&1 \
+   && [[ -o interactive ]] \
+   && [[ -z "$TMUX" ]] \
+   && [[ "$TERM_PROGRAM" != "vscode" ]] \
+   && [[ -z "$INSIDE_EMACS" ]]; then
+  exec tmux new-session -A -s main
+fi
+
+
 # OS-specific settings
 case "$OSTYPE" in
   darwin*) [ -f ~/.config/zsh/os/darwin.zsh ] && source ~/.config/zsh/os/darwin.zsh ;;

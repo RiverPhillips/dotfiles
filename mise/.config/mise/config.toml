@@ -5,7 +5,10 @@ aws-cli = { version = "latest", symlink_bins = "true" }
 bat = "latest"
 bazelisk = "latest"
 difftastic = "latest"
+hugo = "latest"
+hugo-extended = "latest"
 node = 'lts'
+npm = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = ['node']

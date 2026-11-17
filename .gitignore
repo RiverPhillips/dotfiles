@@ -1,0 +1,20 @@
+# Claude Code live state (stowed into ~/.claude); only CLAUDE.md, settings.json,
+# agents/, commands/ and hand-written skills are tracked
+/.claude/
+/claude/dot-claude/.credentials.json
+/claude/dot-claude/.last-*
+/claude/dot-claude/backups/
+/claude/dot-claude/cache/
+/claude/dot-claude/file-history/
+/claude/dot-claude/history.jsonl
+/claude/dot-claude/plugins/
+/claude/dot-claude/projects/
+/claude/dot-claude/session-env/
+/claude/dot-claude/sessions/
+/claude/dot-claude/shell-snapshots/
+/claude/dot-claude/skills/ast-grep
+/claude/dot-claude/skills/synced/
+
+# herdr runtime state; only config.toml is tracked
+/herdr/.config/herdr/*
+!/herdr/.config/herdr/config.toml
